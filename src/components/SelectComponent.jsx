@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Select from 'react-select';
 import styles from '../app.module.css';
 import * as yup from 'yup';
@@ -28,7 +28,7 @@ const validateAndGetErrorMessage = (scheme, value) => {
 export const SelectComponent = () => {
   const [login, setLogin] = useState('');
   const [loginError, setLoginError] = useState(null);
-  let error = null;
+  const submitButtonRef = useRef(null);
 
   const onLoginChange = ({ target }) => {
     setLogin(target.value);
@@ -42,6 +42,10 @@ export const SelectComponent = () => {
     const error = validateAndGetErrorMessage(loginChangesScheme, target.value);
 
     setLoginError(error);
+
+    if (target.value.length === 20) {
+      submitButtonRef.current.focus();
+    }
   };
 
   const onSubmit = (event) => {
@@ -56,7 +60,7 @@ export const SelectComponent = () => {
     // }
     const error = validateAndGetErrorMessage(loginBlurScheme, login);
 
-    setLoginError((loginError) => loginError + error);
+    setLoginError(error);
   };
 
   const productOptions = [
@@ -114,7 +118,7 @@ export const SelectComponent = () => {
           onChange={onLoginChange}
           onBlur={onLoginBlur}
         />
-        <button type="submit" disabled={loginError !== null}>
+        <button ref={submitButtonRef} type="submit" disabled={loginError !== null}>
           Отправить
         </button>
       </form>
