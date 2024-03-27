@@ -1,5 +1,5 @@
 import styles from './app.module.css';
-import { SelectComponent } from './components/Select'
+import { SelectComponent } from './components/SelectComponent'
 
 export const App = () => {
   return (
